@@ -64,4 +64,24 @@ describe('Routes', () => {
     expect(recipe).toBeDefined();
     expect(recipe.title).toBe(newRecipe.title);
   });
+
+  test('POST /recipes/:id/delete should delete a recipe', async () => {
+    // insert a recipe directly into the test db
+    const title = 'To Be Deleted';
+    const ingredients = 'delete ingredients';
+    const method = 'delete method';
+    const inserted = await db.run('INSERT INTO recipes (title, ingredients, method) VALUES (?, ?, ?)', [title, ingredients, method]);
+    // sqlite run in this wrapper returns an object with lastID
+    const id = inserted.lastID || (await db.get('SELECT id FROM recipes WHERE title = ?', [title])).id;
+
+    const response = await request(app)
+      .post(`/recipes/${id}/delete`)
+      .send();
+
+    expect(response.status).toBe(302);
+    expect(response.headers.location).toBe('/recipes');
+
+    const recipe = await db.get('SELECT * FROM recipes WHERE id = ?', [id]);
+    expect(recipe).toBeUndefined();
+  });
 });

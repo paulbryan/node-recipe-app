@@ -4,6 +4,9 @@
             <h1>{{recipe.title}}</h1>
             <div class="recipe-actions">
                 <button class="btn btn-primary" onclick="showEditForm()">Edit Recipe</button>
+                <form action="/recipes/{{recipe.id}}/delete" method="POST" style="display:inline-block;margin-left:8px;">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this recipe?')">Delete</button>
+                </form>
                 <a href="/recipes" class="btn btn-secondary">Back to All Recipes</a>
             </div>
         </div>
@@ -67,6 +70,9 @@
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Update Recipe</button>
                     <button type="button" class="btn btn-secondary" onclick="hideEditForm()">Cancel</button>
+                    <form action="/recipes/{{recipe.id}}/delete" method="POST" style="display:inline-block;margin-left:8px;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this recipe?')">Delete</button>
+                    </form>
                 </div>
             </form>
         </div>
